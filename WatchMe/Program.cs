@@ -2,13 +2,13 @@
 using System;
 using System.IO;
 
-namespace MyNamespace
+namespace FileWatcher
 {
-    class MyClassCS
+    class FWMainClass
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            using var watcher = new FileSystemWatcher(@"C:\tempxxx");
+            using var watcher = new FileSystemWatcher(args[0]);
 
             watcher.NotifyFilter = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
@@ -39,21 +39,21 @@ namespace MyNamespace
             {
                 return;
             }
-            Console.WriteLine($"Changed: {e.FullPath}");
+            Console.WriteLine($"{DateTime.Now}, Changed: {e.FullPath}");
         }
 
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
-            string value = $"Created: {e.FullPath}";
+            string value = $"{DateTime.Now}, Created: {e.FullPath}";
             Console.WriteLine(value);
         }
 
         private static void OnDeleted(object sender, FileSystemEventArgs e) =>
-            Console.WriteLine($"Deleted: {e.FullPath}");
+            Console.WriteLine($"{DateTime.Now}, Deleted: {e.FullPath}");
 
         private static void OnRenamed(object sender, RenamedEventArgs e)
         {
-            Console.WriteLine($"Renamed:");
+            Console.WriteLine($"{DateTime.Now}, Renamed:");
             Console.WriteLine($"    Old: {e.OldFullPath}");
             Console.WriteLine($"    New: {e.FullPath}");
         }
@@ -65,7 +65,7 @@ namespace MyNamespace
         {
             if (ex != null)
             {
-                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"{DateTime.Now}, Message: {ex.Message}");
                 Console.WriteLine("Stacktrace:");
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine();
